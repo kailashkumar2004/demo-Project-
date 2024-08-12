@@ -105,6 +105,34 @@ app.delete("/deleteUserById/:id", async (req, res) => {
         result: deleteUser
     });
 });
+app.post("/searchUser", async (req, res) => {
+    const body = req.body;
+    const searchUser = await User.find(body);
+    console.log("searchUser---------><", searchUser);
+    if (!searchUser) {
+        return res.status(401).json({
+            msg: "user are not search"
+        });
+    };
+    return res.status(200).json({
+        msg: "okk sucess",
+        count: searchUser.length,
+        result: searchUser
+    });
+});
+app.post("/searchWithFirstName", async (req, res) => {
+    const searchUser = await User.findOne({ firstName: req.body.firstName });
+    console.log("searchUser--------><", searchUser);
+    if (!searchUser) {
+        return res.status(401).json({
+            msg: "user not find"
+        });
+    };
+    return res.status(200).json({
+        msg: "okk sucess",
+        result: searchUser
+    });
+});
 app.listen(PORT, () => {
     console.log(`server is runing on at PORT ${PORT}`)
 });
